@@ -1,1 +1,2 @@
 # ProcessMonitoringDashboard
+The goal of this project is to develop a user-friendly graphical dashboard that monitors system processes in real-time, displaying key metrics like process states (e.g., running, sleeping), CPU usage, and memory consumption. The tool aims to assist administrators in tracking system performance and identifying issues such as resource-heavy processes or potential bottlenecks.
