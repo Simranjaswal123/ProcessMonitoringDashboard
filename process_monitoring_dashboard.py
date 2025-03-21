@@ -7,21 +7,29 @@ import time
 
 
 # Module 1: Data Collection
+# Module 1: Data Collection
 def get_process_data():
-    """Fetch real-time process data."""
     processes = []
     try:
-        for proc in psutil.process_iter(['pid', 'name', 'status', 'cpu_percent', 'memory_info']):
+        for proc in psutil.process_iter(['pid', 'name', 'status', 'cpu_percent', 'memory_info', 'num_threads', 'io_counters']):
+            io_counters = proc.info['io_counters']
+            read_bytes = io_counters.read_bytes if io_counters else 0
+            write_bytes = io_counters.write_bytes if io_counters else 0
+
             processes.append({
                 'pid': proc.info['pid'],
                 'name': proc.info['name'],
                 'state': proc.info['status'],
                 'cpu': proc.info['cpu_percent'],
-                'memory': proc.info['memory_info'].rss / 1024 / 1024  # Convert bytes to MB
+                'memory': proc.info['memory_info'].rss / 1024 / 1024,  # Convert bytes to MB
+                'threads': proc.info['num_threads'],
+                'io_read': read_bytes / (1024 * 1024),  # Convert bytes to MB
+                'io_write': write_bytes / (1024 * 1024)  # Convert bytes to MB
             })
     except Exception as e:
         print(f"Error fetching process data: {e}")
     return processes
+
 
 
 # Module 2: GUI Functions
